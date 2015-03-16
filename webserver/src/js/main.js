@@ -9,7 +9,8 @@ var Handlebars = require('../../lib/template-engine.js');
 var alertTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/../../views/partials/alert.hbs', 'utf-8'));
 
 $(function(){
-	$('#generate-button').on('click', function(){
+	//homepage
+	$('#generate-button, #generate-button-menu').on('click', function(){
 		$('#alert-placeholder').html('');
 		$.get('/generate', function(response){
 			if(response.status === "success"){
@@ -23,6 +24,43 @@ $(function(){
 					type: 'danger'
 				}));
 			}
+		});
+	});
+
+	$('#export-button').on('click', function(){
+		document.location = '/export.zip';
+	});
+
+	$('#add-new-page').on('click', function(){
+		console.log("add new page");
+		$input = $(this).parent().parent().find('input');
+		var value = $input.val();
+
+		//TODO: validate correct ext.
+		if(value){
+			//create a page
+			$.post('/page', {path: 'src/' + value}, function(response){
+				console.log(response);
+				if(response.status === "success"){
+					//TODO: add the new row to table
+					window.location = window.location;
+				}
+			});
+		}
+	});
+
+	$('.delete-page').on('click', function(){
+		var path = $(this).parent().data('path');
+
+		$.ajax({
+			url: '/page?path=src/' + path,
+			type: 'DELETE',
+			success: function(response){
+				console.log(response);
+				if(response.status === "success"){
+					window.location = window.location;
+				}
+			},
 		});
 	});
 });
