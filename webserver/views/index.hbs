@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Edit pages</div>
+
+	<table class="table">
+	{{#each files}}
+		<tr>
+			<td><a href="/edit?path=src/{{this}}">{{this}}</a></td>
+		</tr>
+	{{/each}}
+	</table>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Edit configs</div>
+
+	<table class="table">
+		<tr>
+			<td><a href="/edit?path=settings.json">settings.json</a></td>
+		</tr>
+	</table>
+</div>
+
+<button type="button" class="btn btn-default" id="generate-button">
+	<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Generate
+</button>
+<div id="alert-placeholder"></div>
