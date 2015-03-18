@@ -26,7 +26,12 @@ module.exports = function(grunt){
 		},
 		watch: {
 			express: {
-				files: ['webserver/**/*.js'],
+				files: [
+					'webserver/**/*.js',
+					'lib/**/*.js',
+					'!webserver/src/js/**/*.js',
+					'!webserver/static/**/*',
+				],
 				tasks: ['express:server'],
 				options: {
 					spawn: false,

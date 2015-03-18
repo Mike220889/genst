@@ -3,9 +3,6 @@ var express = require('express');
 var serveStatic = require('serve-static');
 var bodyParser = require('body-parser');
 
-var fileEditor = require('./lib/editor.js');
-var frontMatter = require('hexo-front-matter');
-
 var app = module.exports = express();
 var hbs = require('express-handlebars').create({
 	layoutsDir: 'webserver/views/layouts',
@@ -31,49 +28,18 @@ app.get('/', function(req, res){
 		list.forEach(function(file){
 			//remove dot files
 			if(!/^\./.test(file)){
-				files.push(file);
+				files.push({
+					path: file,
+					editLink : '/page?path=src/' + file,
+				});
 			}
 		});
 		res.render('index.hbs', {files: files});
 	});
 });
 
-app.get('/edit', function(req, res){
-	var filepath = 'content/' + req.query.path;
-	console.log(filepath);
-
-	fileEditor.render(req, res, filepath, function(err, html){
-		res.render('edit', {
-			editor: html,
-			filepath: filepath
-		});
-	});
-});
-
-app.post('/edit', function(req, res){
-	var filepath = 'content/' + req.query.path;
-
-	fileEditor.save(req, res, filepath);
-});
-
-app.post('/page', function(req, res){
-	//create a new page
-	var path = req.body.path;
-
-	fs.writeFile(__dirname + '/../content/' + path, "", function(err){
-		if(err) return res.send({status:"error", error: err.message});
-		res.send({status:"success"});
-	});
-});
-
-app.delete('/page', function(req, res){
-	var path = req.query.path;
-
-	fs.unlink(__dirname + '/../content/' + path, function(err){
-		if(err) return res.send({status:"error", error: err.message});
-		res.send({status:"success"});
-	});
-});
+app.use('/page', require('./submodules/page.js'));
+app.use('/review', require('./submodules/git.js'));
 
 var logger = require('./lib/web-logger.js');
 var generate = require('../lib/generator.js');
@@ -94,7 +60,4 @@ app.get('/export.zip', function(req, res){
 	res.send(zip.toBuffer());
 });
 
-//sub app to serve built html files
-var build = express();
-build.use('/', serveStatic(__dirname + '/../content/build/'));
-app.use('/build', build);
+app.use('/build', require('./submodules/build.js'));

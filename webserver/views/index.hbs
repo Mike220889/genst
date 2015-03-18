@@ -5,14 +5,14 @@
 	{{#each files}}
 		<tr>
 			<td>
-				<div class="btn-group" data-path="{{this}}">
+				<div class="btn-group" data-path="{{this.path}}">
 					<button class="btn btn-danger delete-page">
 						<span class="glyphicon glyphicon-trash"></span>
 					</button>
-					<a class="btn btn-default" href="/edit?path=src/{{this}}">
+					<a class="btn btn-default" href="{{this.editLink}}">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
-					<a class="btn" href="/edit?path=src/{{this}}">{{this}}</a>
+					<a class="btn" href="{{this.editLink}}">{{this.path}}</a>
 				</div>
 			</td>
 		</tr>
@@ -37,7 +37,7 @@
 
 	<table class="table">
 		<tr>
-			<td><a href="/edit?path=settings.json">settings.json</a></td>
+			<td><a href="/page?path=settings.json">settings.json</a></td>
 		</tr>
 	</table>
 </div>

@@ -1,0 +1,6 @@
+{{#each this.[0].lines}}
+	<span style="font-family:monospace; display:block; white-space:pre;" class="
+		{{~#if this.add}}bg-success{{/if~}}
+		{{~#if this.del}}bg-danger{{/if~}}
+	">{{this.content}}</span>
+{{/each}}

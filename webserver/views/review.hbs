@@ -1,0 +1,40 @@
+<form method="POST">
+<ul class="list-group">
+{{#each status.files}}
+	<li class="list-group-item" data-filepath="{{@key}}" data-deleted="{{#if this.deleted}}true{{/if}}">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default{{#if this.resetable}}{{else}} disabled{{/if}} reset-button">
+				<span class="glyphicon glyphicon-remove"></span> Reset
+			</button>
+			<label class="btn btn-default">
+				<input class="track-checkbox" type="checkbox" {{#if this.staged}}checked{{/if}} name="files[{{@key}}]"> Track
+			</label>
+			<a
+				class="collapsed btn btn-default {{#if this.diff}}{{else}}disabled{{/if}}"
+				href="#collapse-{{sanitize @key}}"
+				data-toggle="collapse"
+			>
+				Show diff
+			</a>
+		</div>
+		<span>{{@key}}</span>
+		{{#if this.added}}<span class="label label-success"> new</span>{{/if}}
+		{{#if this.modified}}<span class="label label-info"> modified</span>{{/if}}
+		{{#if this.deleted}}<span class="label label-danger"> deleted</span>{{/if}}
+		{{#if this.renamed}}<span class="label label-info"> renamed</span>{{/if}}
+		{{#if this.diff}}
+			<div class="panel-body collapse" id="collapse-{{sanitize @key}}">
+				{{partial "diff" this.diff}}
+			</div>
+		{{/if}}
+	</li>
+{{/each}}
+</ul>
+
+<div class="input-group">
+	<input type="text" class="form-control" placeholder="Commit message" name="message"/>
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="submit">Commit</button>
+	</span>
+</div>
+</form>

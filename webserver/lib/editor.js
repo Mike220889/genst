@@ -3,6 +3,7 @@ var path = require('path');
 
 var MarkdownEditor = require('./editors/markdown.js');
 var JSONEditor = require('./editors/json.js');
+var TxtEditor = require('./editors/txt.js');
 
 var getEditorObject = function(filepath){
 	switch(path.extname(filepath)){
@@ -11,6 +12,9 @@ var getEditorObject = function(filepath){
 			break;
 		case '.json':
 			return JSONEditor;
+			break;
+		default:
+			return TxtEditor;
 			break;
 	}
 }
