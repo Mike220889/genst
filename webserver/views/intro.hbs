@@ -1,0 +1,28 @@
+<h3>Create your site:</h3>
+
+<form method="POST" action="/wizard">
+	<div class="form-group">
+		<label for="title">Site Title</label>
+		<input type="text" name="title" class="form-control" id="input-title" placeholder="Site Title"/>
+	</div>
+
+	<div class="form-group">
+		<label for="layout">Layout Style</label>
+		<select name="input-layout" class="form-control">
+			<option value="topnav">Top-Nav</option>
+			<option value="sidebar">Sidebar</option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		<label for="theme">Theme</label>
+		<select name="theme" class="form-control">
+			<option value="neutral">Neutral</option>
+			<option value="evergreen">Evergreen</option>
+			<option value="jazzy">Jazzy</option>
+		</select>
+	</div>
+
+	<button type="submit" class="btn btn-warning">Go!</button>
+
+</form>

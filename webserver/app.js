@@ -21,25 +21,28 @@ app.use(bodyParser.urlencoded({
 	extended: true,
 }));
 
-app.get('/', function(req, res){
-	//get source files
-	fs.readdir('content/src', function(err, list){
-		var files = [];
-		list.forEach(function(file){
-			//remove dot files
-			if(!/^\./.test(file)){
-				files.push({
-					path: file,
-					editLink : '/page?path=src/' + file,
-				});
-			}
+var content = require('../lib/content.js');
+app.get('/', function(req, res, next){
+	content.exists(function(result){
+		if(!result){
+			return res.render('intro', {});
+		}
+		content.getSrcFiles(function(err, files){
+			files = files.map(function(item){
+				return {
+					path: item,
+					editLink : '/page?path=src/' + item,
+				};
+			});
+
+			res.render('index.hbs', {files: files});
 		});
-		res.render('index.hbs', {files: files});
 	});
 });
 
-app.use('/page', require('./submodules/page.js'));
-app.use('/review', require('./submodules/git.js'));
+app.use('/wizard/', require('./submodules/wizard.js'));
+app.use('/page/', require('./submodules/page.js'));
+app.use('/review/', require('./submodules/git.js'));
 
 var logger = require('./lib/web-logger.js');
 var generate = require('../lib/generator.js');
