@@ -10,6 +10,6 @@ app.post('/', function(req, res, next){
 		layout : req.body.layout,
 	}, function(err){
 		if(err) return next(err);
-		res.send(200);
+		res.redirect('/');
 	});
 });
